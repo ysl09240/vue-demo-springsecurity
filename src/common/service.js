@@ -55,26 +55,18 @@ pc.interceptors.response.use(
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {
     // debugger
-    pc.get(url, {
-      params: params
-    })
-      .then(response => {
-        if (response.data.code === 200 || response.data.code === 0) {
-          //返回成功处理  这里传的啥 后续调用的时候 res就是啥
-          resolve(response.data); //我们后台所有数据都是放在返回的data里所以这里统一处理了
-        } else {
-          //错误处理
-          resolve(response.data);
-        }
-      })
-      .catch(err => {
-        reject(err);
-        let message = '请求失败！请检查网络';
-        //错误返回
-        if (err.response) {
-          message = err.response.data.message;
-        }
-        console.log(message);
+      pc.get(url, {
+        params: params
+      }).then(response => {
+          if (response.data.code === 200 || response.data.code === 0) {
+            //返回成功处理  这里传的啥 后续调用的时候 res就是啥
+            resolve(response.data); //我们后台所有数据都是放在返回的data里所以这里统一处理了
+          } else {
+            //错误处理
+            resolve(response.data);
+          }
+      }).catch(err => {
+          reject(err);
       })
   })
 }
@@ -86,23 +78,14 @@ export function get(url, params = {}) {
  */
 
 export function postJSON(url, data = {}) {
-  return new Promise((resolve, reject) => {
-    pc.post(url, data)
-      .then(response => {
-        if (response.data.code === 200 || response.data.code === 0) {
-          resolve(response.data);
-        } else {
-          resolve(response.data);
-        }
-      }, err => {
-        reject(err);
-        let message = '请求失败！请检查网络';
-        if (err.response) {
-          message = err.response.data.message;
-        }
-        console.log(message);
-      })
-  })
+    return Promise((resolve, reject) => {
+      pc.post(url, data)
+        .then(response => {
+            resolve(response.data);
+        }, err => {
+          reject(err);
+        })
+    })
 }
 
 /**
@@ -111,27 +94,18 @@ export function postJSON(url, data = {}) {
  * @param {*} data
  */
 export function postForm(url, data = {}) {
-  return new Promise((resolve, reject) => {
-    pc({
-      method: 'post',
-      url: url,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }, // 请求头，发送FormData格式的数据，必须是 这种请求头。
-      data: QS.stringify(data)
-    }).then(response => {
-      if (response.data.code === 200 || response.data.code === 0) {
+    return new Promise((resolve, reject) => {
+      pc({
+        method: 'post',
+        url: url,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }, // 请求头，发送FormData格式的数据，必须是 这种请求头。
+        data: QS.stringify(data)
+      }).then(response => {
         resolve(response.data);
-      } else {
-        resolve(response.data);
-      }
-    }, err => {
-      reject(err);
-      let message = '请求失败！请检查网络';
-      if (err.response) {
-        message = err.response.data.message;
-      }
-      console.log(message);
+      }, err => {
+        reject(err);
+      })
     })
-  })
 }

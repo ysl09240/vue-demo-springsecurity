@@ -10,6 +10,11 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    },{
+      path: '/main',
+      name: 'main',
+      meta: { title: '主页' },
+      component: () => import('../components/main/Main.vue')
     }
   ]
 })

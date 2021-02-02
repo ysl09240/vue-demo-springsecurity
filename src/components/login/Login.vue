@@ -37,8 +37,16 @@
     },
     methods:{
       async onSubmit() {
-        let res = loginApi.login(this.form);
-        console.log(res);
+        const _this = this;
+        let promise = loginApi.login(this.form);
+        promise.then( function(res) {
+          if(res){
+            console.log(res);
+            _this.$router.push({name:'main',params:res.msg});
+          }
+        }).catch(function (error){
+          // error==上面的error
+        })
       }
     },
     beforeDestroy(){
