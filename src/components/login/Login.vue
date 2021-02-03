@@ -27,6 +27,7 @@
           username:"admin",
           password:"123456"
         },
+        userToken:"",
         msg: 'Welcome to Your Vue.js App'
       }
     },
@@ -41,8 +42,10 @@
         let promise = loginApi.login(this.form);
         promise.then( function(res) {
           if(res){
-            console.log(res);
-            _this.$router.push({name:'main',params:res.msg});
+            console.log("-------------------");
+            if(res.status!=='error'){
+              _this.$router.push({name:'home',params:res.msg});
+            }
           }
         }).catch(function (error){
           // error==上面的error

@@ -2,20 +2,23 @@ import axios from 'axios'; // 引入axios
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据
 import Vue from 'vue';
 import router from '@/router';
+axios.defaults.withCredentials = true;
 const pc = axios.create({
   timeout: 20000,
-  baseURL: 'http://192.168.20.121:8090/boot_vue'
+  baseURL: 'http://192.168.20.121:8090/boot_vue',
+  withCredentials: true,
+  crossDomain: true
 });
 //HttpRequest拦截器
 pc.interceptors.request.use(
-  async (config) => {
-    // 获取token
-    // config.headers["token"] = `eyJhbGciOiJIUzI1NiJ9.eyJMT0dJTl9VU0VSX0tFWSI6ImE0ZjRiZDllLTJiMjMtNDhlNy04NjljLTFmYmM1M2VmMDdlZCJ9.I8LUW_TR0IhYSccCkopCqiwzLR4WTw2pDI1lIFxeBcM`
-    return config
+  config => {
+    // if (localStorage.getItem('Authorization')) {
+    //   config.headers.Authorization = localStorage.getItem('Authorization');
+    // }
+    return config;
   },
-  (err) => {
-
-    return Promise.reject(err);
+  (err) => {
+    return Promise.reject(err);
   }
 );
 
@@ -78,13 +81,12 @@ export function get(url, params = {}) {
  */
 
 export function postJSON(url, data = {}) {
-    return Promise((resolve, reject) => {
-      pc.post(url, data)
-        .then(response => {
-            resolve(response.data);
-        }, err => {
-          reject(err);
-        })
+    return new Promise((resolve, reject) => {
+      pc.post(url,data).then(response => {
+        resolve(response.data);
+      }, err => {
+        reject(err);
+      })
     })
 }
 
