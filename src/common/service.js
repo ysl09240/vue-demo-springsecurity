@@ -12,8 +12,9 @@ const pc = axios.create({
 //HttpRequest拦截器
 pc.interceptors.request.use(
   config => {
-    // if (localStorage.getItem('Authorization')) {
-    //   config.headers.Authorization = localStorage.getItem('Authorization');
+    // let session = sessionStorage.getItem("session")
+    // if(session){
+    //   config.headers["session"] = session
     // }
     return config;
   },
